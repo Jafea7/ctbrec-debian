@@ -1,0 +1,35 @@
+#
+# ctbrec-liberica Dockerfile
+#
+# https://github.com/jafea7/ctbrec-debian
+#
+
+FROM amd64/debian:buster AS builder
+
+# Install curl & tar to get ffmpeg static
+RUN apt-get update && apt-get install -y curl xz-utils
+
+# Copy the rootfs layout including files
+COPY rootfs/ /
+
+# Install ffmpeg static build
+RUN mkdir -p -m=666 /app/ffmpeg && \
+    curl -k -vv https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg" && \
+    chmod -R 666 /app/* && \
+    chmod 776 /app/*.sh && \
+    chmod 776 /app/ffmpeg/ffmpeg
+
+# Pull base image.
+FROM adoptopenjdk/openjdk11:x86_64-debianslim-jre11u-nightly
+
+# Copy app folder with ffmpeg from builder
+COPY --from=builder /app /app
+
+# Create the volumes
+VOLUME [ "/app/captures", "/app/config" ]
+
+# Expose server non-SSL and SSL ports
+EXPOSE 8080 8443
+
+# Initialise
+ENTRYPOINT ["/app/init.sh"]

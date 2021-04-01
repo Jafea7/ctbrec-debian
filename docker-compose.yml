@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+# CTBRec streaming recorder
+  ctbrec:
+    image: "jafea7/ctbrec-debian"
+    container_name: "CTBRec-Jafea7"
+    environment:
+      - TZ=${TZ}
+      - PGID=${PGID}
+      - PUID=${PUID}
+    volumes:
+      - "${CONFIG}/ctbrec:/app/config"
+      - "${MEDIA}:/app/captures"
+    ports:
+      - 8080:8080
+      - 8443:8443
+    restart: "unless-stopped"
