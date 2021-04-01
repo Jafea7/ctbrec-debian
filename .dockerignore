@@ -1,7 +1,5 @@
 .git\*
 .github\*
-config\*
-media\*
 .env
 .gitattributes
 .gitignore
@@ -9,4 +7,3 @@ Dockerfile*
 docker-compose.yml
 LICENSE
 README.md
-build-push.ps1

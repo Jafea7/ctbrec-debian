@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y curl xz-utils
 # Copy the rootfs layout including files
 COPY rootfs/ /
 
-# Install ffmpeg static build
+# Install ffmpeg static build, set permissions
 RUN mkdir -p -m=666 /app/ffmpeg && \
     curl -k -vv https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg" && \
     chmod -R 666 /app/* && \
