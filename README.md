@@ -53,9 +53,7 @@ Where:
 
 Browse to `http://your-host-ip:8080` to access the CTBRec web interface, (or `https://your-host-ip:8443` if TLS is enabled).
 
-**NOTE**: The web interface needs to be enabled in the `server.json` config file before it can be used.  After starting the container, wait a minute then stop it, then edit the `server.json` file to enable it: `"webinterface": true,`
-
-If it's your initial use of this image then a default config is copied that already has the web interface enabled.
+**NOTE**: If it's your initial use of this image then a default config is copied that already has the web interface enabled along with TLS.
 
 ## Usage
 
