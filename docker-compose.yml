@@ -3,7 +3,7 @@ services:
 # CTBRec streaming recorder
   ctbrec:
     image: "jafea7/ctbrec-debian"
-    container_name: "CTBRec-Jafea7"
+    container_name: "CTBRec-Jafea7-Debian"
     environment:
       - TZ=${TZ}
       - PGID=${PGID}
