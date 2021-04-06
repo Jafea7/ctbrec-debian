@@ -247,7 +247,7 @@ After a fresh install and the web interface is enabled, the default login is:
 Change the username/password via the WebUI, you will need to log into it again after saving.
 
 **NOTE**: A fresh start of the image will include a current default server.json, (if it doesn't exist already), with the following options set:
-  - `"downloadFilename": "${siteSanitizedName}_${modelSanitizedName}-${localDateTime(yyyyMMdd-HHmmss)}"`
+  - `"downloadFilename": "${siteSanitizedName}_${modelSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}"`
   - `"fastPlaylistGenerator": true`
   - `"recordingsDirStructure": "ONE_PER_MODEL"`
   - `"totalModelCountInTitle": true`

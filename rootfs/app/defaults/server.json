@@ -17,7 +17,7 @@
   "contactsheetTimestampLook": "font=sans-serif:fontcolor=white:fontsize=60:box=1:boxcolor=black@0.5:boxborderw=5",
   "determineResolution": false,
   "disabledSites": [],
-  "downloadFilename": "${modelSanitizedName}-${localDateTime}",
+  "downloadFilename": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}",
   "eventHandlers": [],
   "fastPlaylistGenerator": true,
   "fastScrollSpeed": true,
