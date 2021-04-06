@@ -146,7 +146,7 @@ version: '2.1'
 services:
   ctbrec-debian:
     image: jafea7/ctbrec-debian
-    build: .
+    container_name: "CTBRec-Jafea7-Debian"
     environment:
       - TZ=Australia/Sydney
       - PGID=1000
@@ -157,6 +157,7 @@ services:
     volumes:
       - "/home/ctbrec/.config/ctbrec:/app/config:rw"
       - "/home/ctbrec/media:/app/captures:rw"
+    restart: "unless-stopped"
 ```
 
 ## Docker Image Update

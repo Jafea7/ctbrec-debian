@@ -1,7 +1,7 @@
 version: '2.1'
 services:
 # CTBRec streaming recorder
-  ctbrec:
+  ctbrec-debian:
     image: "jafea7/ctbrec-debian"
     container_name: "CTBRec-Jafea7-Debian"
     environment:
