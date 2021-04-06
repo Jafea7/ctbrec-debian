@@ -146,7 +146,7 @@ version: '2.1'
 services:
   ctbrec-debian:
     image: jafea7/ctbrec-debian
-    container_name: "CTBRec-Jafea7-Debian"
+    container_name: "CTBRec-Debian"
     environment:
       - TZ=Australia/Sydney
       - PGID=1000
