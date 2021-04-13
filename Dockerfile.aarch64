@@ -7,7 +7,9 @@
 FROM arm64v8/debian:buster AS builder
 
 # Install curl & tar to get ffmpeg static
-RUN apt-get update && apt-get install -y curl xz-utils
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl xz-utils && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the rootfs layout including files
 COPY rootfs/ /

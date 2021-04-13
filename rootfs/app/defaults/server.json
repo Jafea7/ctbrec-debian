@@ -67,7 +67,7 @@
   "onlineCheckSkipsPausedModels": true,
   "overviewUpdateIntervalInSecs": 10,
   "password": "",
-  "playlistRequestTimeout": 1000,
+  "playlistRequestTimeout": 2000,
   "postProcessing": "",
   "postProcessingThreads": 1,
   "postProcessors": [

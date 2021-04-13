@@ -1,8 +1,10 @@
 .git\*
 .github\*
+.dockerignore
 .env
 .gitattributes
 .gitignore
+build-push.ps1
 Dockerfile*
 docker-compose.yml
 LICENSE
