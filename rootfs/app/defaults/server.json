@@ -31,7 +31,7 @@
   "httpSecurePort": 8443,
   "httpServer": "localhost",
   "httpTimeout": 10000,
-  "httpUserAgent": "Mozilla/5.0 (X11; Linux i686; rv:86.0) Gecko/20100101 Firefox/86.0",
+  "httpUserAgent": "Mozilla/5.0 (X11; Linux i686; rv:87.0) Gecko/20100101 Firefox/87.0",
   "httpUserAgentMobile": "Mozilla/5.0 (Android 11; Mobile; rv:68.0) Gecko/68.0 Firefox/86.0",
   "lastDownloadDir": "",
   "livePreviews": false,
