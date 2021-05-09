@@ -31,5 +31,12 @@ chmod -R ugo=rwx ${HOME} && chmod -R g+s ${HOME}
 cp --verbose --no-clobber "/app/defaults/server.json" "/app/config/"
 chmod 666 /app/config/server.json
 
+# Loop while an internet connection is not available
+while ! curl -Is  http://www.google.com | head -n 1 | grep 200
+do
+  echo "Waiting for internet, sleeping 60 seconds ..."
+  sleep 60
+done
+
 # Start CTBRec as the user
 su -p -c "${HOME}/start.sh" ${usr}

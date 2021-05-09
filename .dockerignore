@@ -4,6 +4,8 @@
 .env
 .gitattributes
 .gitignore
+rootfs\app\logback.xml
+rootfs\app\server.log
 build-push.ps1
 Dockerfile*
 docker-compose.yml
