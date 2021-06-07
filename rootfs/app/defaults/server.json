@@ -61,6 +61,7 @@
   "minimumLengthInSeconds": 0,
   "minimumResolution": 0,
   "minimumSpaceLeftInBytes": 0,
+  "modelGroups": [],
   "modelNotes": {},
   "models": [],
   "modelsIgnored": [],
