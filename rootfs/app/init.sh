@@ -34,8 +34,8 @@ chmod 666 /app/config/server.json
 # Loop while an internet connection is not available
 while ! curl -Is  http://www.google.com | head -n 1 | grep 200
 do
-  echo "Waiting for internet, sleeping 60 seconds ..."
-  sleep 60
+  echo "Waiting for internet, sleeping 30 seconds ..."
+  sleep 30
 done
 
 # Start CTBRec as the user
