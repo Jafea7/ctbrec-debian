@@ -17,6 +17,7 @@ CTBRec is a streaming media recorder.
          * [Ports](#ports)
          * [Changing Parameters of a Running Container](#changing-parameters-of-a-running-container)
       * [Docker Compose File](#docker-compose-file)
+      * [QNap Installs](#qnap-installs)
       * [Docker Image Update](#docker-image-update)
          * [Synology](#synology)
          * [unRAID](#unraid)
@@ -163,6 +164,7 @@ services:
 ## QNap Installs
 
 When you create the container using Container Station specify the PUID and PGID environment variables, (you can't do this later).
+
 You may need to set `PGID = 0` and `PUID = 0`, ie. CTBRec runs as root within the container.
 
 ## Docker Image Update
