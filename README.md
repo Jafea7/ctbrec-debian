@@ -160,6 +160,11 @@ services:
     restart: "unless-stopped"
 ```
 
+## QNap Installs
+
+When you create the container using Container Station specify the PUID and PGID environment variables, (you can't do this later).
+You may need to set `PGID = 0` and `PUID = 0`, ie. CTBRec runs as root within the container.
+
 ## Docker Image Update
 
 If the system on which the container runs doesn't provide a way to easily update
