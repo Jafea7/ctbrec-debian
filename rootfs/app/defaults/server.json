@@ -1,4 +1,6 @@
 {
+  "amateurTvPassword": "",
+  "amateurTvUsername": "",
   "bongaPassword": "",
   "bongaUsername": "",
   "bongacamsBaseUrl": "https://bongacams.com",
@@ -7,8 +9,9 @@
   "camsodaPassword": "",
   "camsodaUsername": "",
   "chaturbateBaseUrl": "https://chaturbate.com",
-  "chaturbatePassword": "",
-  "chaturbateUsername": "",
+  "chaturbateMsBetweenRequests": 3000,
+  "chaturbatePassword": "01726673ex",
+  "chaturbateUsername": "duncinuts",
   "chooseStreamQuality": false,
   "colorAccent": "#FFFFFF",
   "colorBase": "#FFFFFF",
@@ -24,7 +27,9 @@
   "fc2livePassword": "",
   "fc2liveUsername": "",
   "ffmpegFileSuffix": "ts",
-  "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -movflags faststart -y -f mpegts",
+  "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -y -f mpegts",
+  "flirt4freePassword": "",
+  "flirt4freeUsername": "",
   "generatePlaylist": true,
   "hlsdlExecutable": "",
   "httpPort": 8080,
@@ -68,7 +73,7 @@
   "monitorClipboard": false,
   "onlineCheckIntervalInSecs": 60,
   "onlineCheckSkipsPausedModels": true,
-  "overviewUpdateIntervalInSecs": 10,
+  "overviewUpdateIntervalInSecs": 60,
   "password": "",
   "playlistRequestTimeout": 2000,
   "postProcessing": "",
@@ -199,4 +204,6 @@
   "windowWidth": 1340,
   "windowX": 0,
   "windowY": 0
+  "xlovecamPassword": "",
+  "xlovecamUsername": ""
 }
