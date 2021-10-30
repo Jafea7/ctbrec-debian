@@ -38,7 +38,7 @@ chmod 666 /app/config/server.json
 
 # Loop while an internet connection is not available
 echo "`date '+%T.%3N'` [Internet]"
-while ! curl -Is  http://www.google.com | head -n 1 | grep 200
+while ! curl -Is -m 5  http://www.google.com | head -n 1 | grep 200
 do
   echo "`date '+%T.%3N'` [Internet failed]: Waiting 30 seconds ..."
   sleep 30
