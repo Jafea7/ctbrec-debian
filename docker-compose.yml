@@ -11,6 +11,10 @@ services:
     volumes:
       - "${CONFIG}/ctbrec:/app/config"
       - "${MEDIA}:/app/captures"
+# Uncomment the following two lines to enable logging to a file
+# The files must exist **before** running the container.
+#      - "${CONFIG}/ctbrec/logback.xml:/app/logback.xml"
+#      - "${CONFIG}/ctbrec/server.log:/app/config/server.log"
     ports:
       - 8080:8080
       - 8443:8443

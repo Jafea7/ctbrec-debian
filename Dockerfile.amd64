@@ -24,7 +24,7 @@ RUN useradd -u 1000 -U -G users -d /app -s /bin/false ctbrec && \
     chmod 776 /app/ffmpeg/ffmpeg
 
 # Pull base image.
-FROM adoptopenjdk/openjdk11:x86_64-debianslim-jre11u-nightly
+FROM adoptopenjdk/openjdk16:x86_64-debianslim-jre-16.0.1_9
 
 # Copy app folder with ffmpeg from builder
 COPY --from=builder /app /app
