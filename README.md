@@ -24,7 +24,7 @@ CTBRec is a streaming media recorder.
       * [Accessing the GUI](#accessing-the-gui)
       * [Shell Access](#shell-access)
       * [Default Web Interface Access](#default-web-interface-access)
-      * [Extras](#extras)
+      * [Persistent Log File](#persistent-log-file)
 
 ## Quick Start
 
@@ -255,7 +255,6 @@ Change the username/password via the WebUI, you will need to log into it again a
 
 **NOTE**: A fresh start of the image will include a current default server.json, (if it doesn't exist already), with the following options set:
   - `"downloadFilename": "${siteSanitizedName}_${modelSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}"`
-  - `"fastPlaylistGenerator": true`
   - `"recordingsDirStructure": "ONE_PER_MODEL"`
   - `"totalModelCountInTitle": true`
   - `"transportLayerSecurity": true`
@@ -266,3 +265,50 @@ Three post-processing steps will be set:
   - Rename to the following: `"${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}.${fileSuffix}"`
   - Create contact sheet: 8x7 images, 2560px wide, timecodes enabled, same file name format as the Rename step.
 
+## Persistent Log File
+
+A persistent log file can be enabled by copying the following files from the GitHub repo into your mapped configuration directory:
+  - `server.log`
+  - `logback.xml`
+
+Make sure they have the correct permissions so that the container can read the `logback.xml` file and write to the `server.log` file.
+
+Include volume mappings for the two files in the `docker run` command or the `docker-compose.yml`.
+```
+docker run -d \
+    --name=ctbrec-debian \
+    -p 8080:8080 \
+    -p 8443:8443 \
+    -v /home/ctbrec/media:/app/captures:rw \
+    -v /home/ctbrec/.config/ctbrec:/app/config:rw \
+    -v /home/ctbrec/.config/ctbrec/logback.xml:/app/config/logback.xml:rw \
+    -v /home/ctbrec/.config/ctbrec/server.log:/app/config/server.log:rw \
+    -e TZ=Australia/Sydney \
+    -e PGID=1000 \
+    -e PUID=1000 \
+    jafea7/ctbrec-debian
+```
+
+```yaml
+version: '2.1'
+services:
+  ctbrec-debian:
+    image: jafea7/ctbrec-debian
+    container_name: "CTBRec-Debian"
+    environment:
+      - TZ=Australia/Sydney
+      - PGID=1000
+      - PUID=1000
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - "/home/ctbrec/.config/ctbrec:/app/config:rw"
+      - "/home/ctbrec/media:/app/captures:rw"
+      - "/home/ctbrec/.config/ctbrec/logback.xml:/app/logback.xml"
+      - "/home/ctbrec/.config/ctbrec/server.log:/app/config/server.log"
+
+    restart: "unless-stopped"
+```
+
+**NOTE:** With the persistent log enabled the container log output will only be available up until the CTBRec server starts, it's then redirected to the `server.log` file.

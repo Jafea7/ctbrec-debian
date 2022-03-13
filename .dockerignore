@@ -13,3 +13,5 @@ Dockerfile*
 docker-compose.yml
 LICENSE
 README.md
+logback.xml
+server.log
