@@ -25,6 +25,7 @@ CTBRec is a streaming media recorder.
       * [Shell Access](#shell-access)
       * [Default Web Interface Access](#default-web-interface-access)
       * [Persistent Log File](#persistent-log-file)
+      * [Extras](#extras)
 
 ## Quick Start
 
@@ -307,8 +308,65 @@ services:
       - "/home/ctbrec/media:/app/captures:rw"
       - "/home/ctbrec/.config/ctbrec/logback.xml:/app/logback.xml"
       - "/home/ctbrec/.config/ctbrec/server.log:/app/config/server.log"
-
     restart: "unless-stopped"
 ```
 
 **NOTE:** With the persistent log enabled the container log output will only be available up until the CTBRec server starts, it's then redirected to the `server.log` file.
+
+## Extras
+
+Included is a simple script that will send a contact sheet created by post-processing to a designated Discord channel.
+
+The script is called `send2discord.sh` and it resides in the `/app` directory, it is designed to be called as the last step in post-processing, (no point calling it before a contact sheet is created).
+
+The relevant entry for post-processing is, for example:
+```
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)} ${absolutePath}",
+        "script.executable": "/app/send2discord.sh"
+      }
+    }
+```
+
+**NOTE:** The first three values can be anything but the last must be `${absolutePath}` as it works out the contact sheet file name from it.
+
+To designate the Discord channel it is to be sent to, create an environment variable called `DISCORDHOOK` with the Discord Webhook.
+
+For example:
+```
+docker run -d \
+    --name=ctbrec-debian \
+    -p 8080:8080 \
+    -p 8443:8443 \
+    -v /home/ctbrec/media:/app/captures:rw \
+    -v /home/ctbrec/.config/ctbrec:/app/config:rw \
+    -e TZ=Australia/Sydney \
+    -e PGID=1000 \
+    -e PUID=1000 \
+    -e DISCORDHOOK=https://discordapp.com/api/webhooks/<channelID>/<token>
+    jafea7/ctbrec-debian
+```
+
+```yaml
+version: '2.1'
+services:
+  ctbrec-debian:
+    image: jafea7/ctbrec-debian
+    container_name: "CTBRec-Debian"
+    environment:
+      - TZ=Australia/Sydney
+      - PGID=1000
+      - PUID=1000
+      - DISCORDHOOK=https://discordapp.com/api/webhooks/<channelID>/<token>
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - "/home/ctbrec/.config/ctbrec:/app/config:rw"
+      - "/home/ctbrec/media:/app/captures:rw"
+    restart: "unless-stopped"
+```
+
+If you've done it correctly then the contact sheet should appear in the Discord channel almost as soon as post-processing is finished.
