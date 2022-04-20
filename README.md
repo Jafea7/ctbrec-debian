@@ -341,6 +341,7 @@ The relevant entries for post-processing are, for example:
 The first variable needs to be `${absolutePath}`, (needed to determine the contact sheet path/name), the following arguments can be anything and any number, (within reason).
 
 To designate the Discord channel it is to be sent to, create an environment variable called `DISCORDHOOK` with the Discord Webhook.
+
 See [here](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for how to get it.
 
 For example:
@@ -379,6 +380,7 @@ services:
 ```
 
 To designate the Telegram channel you need to set two environment variables, `CHAT_ID` and `TOKEN`.
+
 See [here](https://www.shellhacks.com/telegram-api-send-message-personal-notification-bot/) on how to get both.
 
 For example:
