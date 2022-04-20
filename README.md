@@ -315,24 +315,33 @@ services:
 
 ## Extras
 
-Included is a simple script that will send a contact sheet created by post-processing to a designated Discord channel.
+Included are two scripts that will send a contact sheet created by post-processing to a designated Discord or Telegram channel.
 
-The script is called `send2discord.sh` and it resides in the `/app` directory, it is designed to be called as the last step in post-processing, (no point calling it before a contact sheet is created).
+The scripts are called `send2discord.sh` and `send2telegram.sh` respectively, they both reside in the `/app` directory, they are designed to be called as the last step in post-processing, (no point calling them before a contact sheet is created).
 
-The relevant entry for post-processing is, for example:
+The relevant entries for post-processing are, for example:
 ```
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
-        "script.params": "${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)} ${absolutePath}",
+        "script.params": "${absolutePath} ${modelDisplayName} ${localDateTime(yyyyMMdd-HHmmss)}",
         "script.executable": "/app/send2discord.sh"
       }
     }
 ```
-
-**NOTE:** The first three values can be anything but the last must be `${absolutePath}` as it works out the contact sheet file name from it.
+```
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.executable": "/app/send2telegram.sh"
+      }
+    }
+```
+The first variable needs to be `${absolutePath}`, (needed to determine the contact sheet path/name), the following arguments can be anything and any number, (within reason).
 
 To designate the Discord channel it is to be sent to, create an environment variable called `DISCORDHOOK` with the Discord Webhook.
+See [here](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for how to get it.
 
 For example:
 ```
@@ -369,4 +378,42 @@ services:
     restart: "unless-stopped"
 ```
 
-If you've done it correctly then the contact sheet should appear in the Discord channel almost as soon as post-processing is finished.
+To designate the Telegram channel you need to set two environment variables, `CHAT_ID` and `TOKEN`.
+See [here](https://www.shellhacks.com/telegram-api-send-message-personal-notification-bot/) on how to get both.
+
+For example:
+```
+docker run -d \
+    --name=ctbrec-debian \
+    -p 8080:8080 \
+    -p 8443:8443 \
+    -v /home/ctbrec/media:/app/captures:rw \
+    -v /home/ctbrec/.config/ctbrec:/app/config:rw \
+    -e TZ=Australia/Sydney \
+    -e PGID=1000 \
+    -e PUID=1000 \
+    -e CHAT_ID=<chat_id>
+    -e TOKEN=<bot token>
+    jafea7/ctbrec-debian
+```
+
+```yaml
+version: '2.1'
+services:
+  ctbrec-debian:
+    image: jafea7/ctbrec-debian
+    container_name: "CTBRec-Debian"
+    environment:
+      - TZ=Australia/Sydney
+      - PGID=1000
+      - PUID=1000
+      - CHAT_ID=<chat_id>
+      - TOKEN=<bot token>
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - "/home/ctbrec/.config/ctbrec:/app/config:rw"
+      - "/home/ctbrec/media:/app/captures:rw"
+    restart: "unless-stopped"
+```

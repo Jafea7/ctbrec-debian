@@ -15,6 +15,11 @@ services:
 # The files must exist **before** running the container.
 #      - "${CONFIG}/ctbrec/logback.xml:/app/logback.xml"
 #      - "${CONFIG}/ctbrec/server.log:/app/config/server.log"
+# The following variable is for using the optional Discord notification script
+#      - DISCORD=https://discordapp.com/api/webhooks/<channelID>/<token>
+# The following variables are for using the optional Telegram notification script
+#      - CHAT_ID=<channel id>
+#      - TOKEN=<bot token>
     ports:
       - 8080:8080
       - 8443:8443

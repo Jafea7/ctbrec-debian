@@ -1,17 +1,17 @@
 #!/bin/sh
 
-# Simple shell script that will send the contact sheet to a designated Discord channel
+# send2discord.sh ${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}
 
-# send2discord.sh ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)} ${absolutePath}
-
-# To set your Discord Webhook, create an environment variable called DISCORDHOOK that contains the webhook address
-
-model="$1"
-site="$2"
-rectime="$3"
-file="$4"
-
-content="${model} - ${site} - ${rectime}"
+file="$1"
 sheet="${file%.*}.jpg"
+shift
+
+content="$1"
+shift
+for i in $@
+do
+  content=`echo "${content} - ${i}"`
+  echo "|${content}|"
+done
 
 curl -F 'payload_json={"username": "CTBRec", "content":"'"$content"'"}' -F "file1=@$sheet" $DISCORDHOOK
