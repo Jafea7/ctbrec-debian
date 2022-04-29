@@ -315,9 +315,9 @@ services:
 
 ## Extras
 
-Included are two scripts that will send a contact sheet created by post-processing to a designated Discord or Telegram channel.
+Included are three scripts that will send a contact sheet created by post-processing to a designated Discord, Telegram channel, or an email address.
 
-The scripts are called `send2discord.sh` and `send2telegram.sh` respectively, they both reside in the `/app` directory, they are designed to be called as the last step in post-processing, (no point calling them before a contact sheet is created).
+The scripts are called `send2discord.sh`, `send2telegram.sh`, and `send2email.sh` respectively, they reside in the `/app` directory, they are designed to be called as the last step in post-processing, (no point calling them before a contact sheet is created).
 
 The relevant entries for post-processing are, for example:
 ```
@@ -338,7 +338,16 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
-The first variable needs to be `${absolutePath}`, (needed to determine the contact sheet path/name), the following arguments can be anything and any number, (within reason).
+```
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.executable": "/app/send2email.sh"
+      }
+    }
+```
+The first variable needs to be `${absolutePath}`, (needed to determine the contact sheet path/name), the following arguments can be anything and any number, (within reason), they will be concatenated with ` - ` and used as the subject.
 
 To designate the Discord channel it is to be sent to, create an environment variable called `DISCORDHOOK` with the Discord Webhook.
 
@@ -419,3 +428,55 @@ services:
       - "/home/ctbrec/media:/app/captures:rw"
     restart: "unless-stopped"
 ```
+
+To send to an email address you need to set four environment variables, `MAILSERVER`, `MAILFROM`, `MAILTO`, and `MAILPASS`.
+
+| Variable | Required | Meaning |
+|----------|----------|---------|
+| MAILSERVER | Mandatory | Address of the mail server in the form: `smtps://smtp.<domain>:<port>` |
+| MAILFROM | Mandatory | Email address the emails are sent from. |
+| MAILTO | Mandatory | Email address to send the emails to. |
+| MAILPASS | Mandatory | Password for email account sending the emails. |
+
+For example:
+```
+docker run -d \
+    --name=ctbrec-debian \
+    -p 8080:8080 \
+    -p 8443:8443 \
+    -v /home/ctbrec/media:/app/captures:rw \
+    -v /home/ctbrec/.config/ctbrec:/app/config:rw \
+    -e TZ=Australia/Sydney \
+    -e PGID=1000 \
+    -e PUID=1000 \
+    -e MAILSERVER=smtps://smtp.gmail.com:465
+    -e MAILFROM=my_really_cool_email@gmail.com
+    -e MAILTO=woohoo_another_capture@gmail.com
+    -e MAILPASS=my_really_super_secret_p4ssw0rd
+    jafea7/ctbrec-debian
+```
+
+```yaml
+version: '2.1'
+services:
+  ctbrec-debian:
+    image: jafea7/ctbrec-debian
+    container_name: "CTBRec-Debian"
+    environment:
+      - TZ=Australia/Sydney
+      - PGID=1000
+      - PUID=1000
+      - MAILSERVER=smtps://smtp.gmail.com:465
+      - MAILFROM=my_really_cool_email@gmail.com
+      - MAILTO=woohoo_another_capture@gmail.com
+      - MAILPASS=my_really_super_secret_p4ssw0rd
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - "/home/ctbrec/.config/ctbrec:/app/config:rw"
+      - "/home/ctbrec/media:/app/captures:rw"
+    restart: "unless-stopped"
+```
+
+For `docker-compose` you can also add the variables to the `.env` file and reference them from within the `docker-compose.yml` file.
