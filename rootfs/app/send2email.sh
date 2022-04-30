@@ -1,9 +1,10 @@
 #!/bin/sh
 
-# send2email.sh ${absolutePath} [${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)} ...]
+# send2email.sh ${absolutePath} [${modelDisplayName} ${localDateTime(yyyyMMdd-HHmmss)} ...]
 
 file="$1"
 sheet="${file%.*}.jpg"
+length=`/app/ffmpeg/ffmpeg -i "$file" 2>&1 | grep "Duration" | cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g'`
 name=`basename $sheet`
 shift
 
@@ -17,6 +18,7 @@ else
     content=`echo "${content} - ${i}"`
   done
 fi
+content=`echo "${content}: ${length}"`
 
 encoded=`base64 $sheet`
 

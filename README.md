@@ -349,6 +349,8 @@ The relevant entries for post-processing are, for example:
 ```
 The first variable needs to be `${absolutePath}`, (needed to determine the contact sheet path/name), the following arguments can be anything and any number, (within reason), they will be concatenated with ` - ` and used as the subject.
 
+The duration of the video will be concatenated at the end as `: hh:mm:ss`.
+
 To designate the Discord channel it is to be sent to, create an environment variable called `DISCORDHOOK` with the Discord Webhook.
 
 See [here](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for how to get it.
