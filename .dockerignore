@@ -1,5 +1,5 @@
-.config\*
-.media\*
+config\*
+media\*
 .git\*
 .github\*
 .dockerignore
