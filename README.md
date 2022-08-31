@@ -366,7 +366,7 @@ docker run -d \
     -e TZ=Australia/Sydney \
     -e PGID=1000 \
     -e PUID=1000 \
-    -e DISCORDHOOK=https://discordapp.com/api/webhooks/<channelID>/<token>
+    -e DISCORDHOOK=https://discordapp.com/api/webhooks/<channelID>/<token> \
     jafea7/ctbrec-debian
 ```
 
@@ -405,8 +405,8 @@ docker run -d \
     -e TZ=Australia/Sydney \
     -e PGID=1000 \
     -e PUID=1000 \
-    -e CHAT_ID=<chat_id>
-    -e TOKEN=<bot token>
+    -e CHAT_ID=<chat_id> \
+    -e TOKEN=<bot token> \
     jafea7/ctbrec-debian
 ```
 
@@ -451,10 +451,10 @@ docker run -d \
     -e TZ=Australia/Sydney \
     -e PGID=1000 \
     -e PUID=1000 \
-    -e MAILSERVER=smtps://smtp.gmail.com:465
-    -e MAILFROM=my_really_cool_email@gmail.com
-    -e MAILTO=woohoo_another_capture@gmail.com
-    -e MAILPASS=my_really_super_secret_p4ssw0rd
+    -e MAILSERVER=smtps://smtp.gmail.com:465 \
+    -e MAILFROM=my_really_cool_email@gmail.com \
+    -e MAILTO=woohoo_another_capture@gmail.com \
+    -e MAILPASS=my_really_super_secret_p4ssw0rd \
     jafea7/ctbrec-debian
 ```
 
