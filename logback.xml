@@ -26,7 +26,7 @@
 			<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>ctbrec.%i.log</fileNamePattern>
+			<fileNamePattern>server.%i.log</fileNamePattern>
 			<minIndex>1</minIndex>
 			<maxIndex>3</maxIndex>
 		</rollingPolicy>
@@ -38,26 +38,16 @@
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
-		<appender-ref ref="GUI" />
 	</root>
 	
-	<logger name="ctbrec.sites.cam4.Cam4Model" level="INFO"/>
-	<logger name="ctbrec.sites.flirt4free.Flirt4FreeModel" level="INFO"/>
-	<logger name="ctbrec.sites.fc2live.Fc2Model" level="INFO"/>
-	<logger name="ctbrec.sites.stripchat.StripChatModel" level="INFO"/>
-	<logger name="ctbrec.sites.bongacams.BongaCamsModel" level="INFO"/>
-	
-	<logger name="ctbrec.LoggingInterceptor" level="info"/>
+	<logger name="ctbrec.LoggingInterceptor" level="INFO"/>
 	<logger name="ctbrec.io.CookieJarImpl" level="INFO"/>
+	<logger name="ctbrec.recorder.Chaturbate" level="INFO" />
 	<logger name="ctbrec.recorder.FFmpeg" level="DEBUG"/>
-	<logger name="ctbrec.recorder.OnlineMonitor" level="DEBUG"/>
-	<logger name="ctbrec.recorder.RecordingFileMonitor" level="TRACE"/>
-	<logger name="ctbrec.recorder.download.dash.DashDownload" level="INFO"/>
-	<logger name="ctbrec.recorder.server.HlsServlet" level="DEBUG"/>
-	<logger name="ctbrec.recorder.server.RecorderServlet" level="DEBUG"/>
+	<logger name="ctbrec.recorder.OnlineMonitor" level="INFO"/>
+	<logger name="ctbrec.recorder.server.HlsServlet" level="INFO"/>
+	<logger name="ctbrec.recorder.server.RecorderServlet" level="INFO"/>
 	<logger name="ctbrec.recorder.ThreadPoolScaler" level="DEBUG"/>
-	<logger name="ctbrec.ui.ExternalBrowser" level="INFO"/>
-	<logger name="ctbrec.ui.ThumbOverviewTab" level="INFO"/>
 	<logger name="org.eclipse.jetty" level="INFO" />
 	
 </configuration>

@@ -1,4 +1,4 @@
-# Docker container for CTBRec server based on Debian/OpenJDK11
+# Docker container for CTBRec server based on Debian/OpenJDK19
 
 ---
 
