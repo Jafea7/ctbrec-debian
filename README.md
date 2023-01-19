@@ -347,6 +347,17 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
+
+```
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.executable": "/app/send2http.sh"
+      }
+    }
+```
+
 The first variable needs to be `${absolutePath}`, (needed to determine the contact sheet path/name), the following arguments can be anything and any number, (within reason), they will be concatenated with ` - ` and used as the subject.
 
 The duration of the video will be concatenated at the end as `: hh:mm:ss`.
@@ -472,6 +483,67 @@ services:
       - MAILFROM=my_really_cool_email@gmail.com
       - MAILTO=woohoo_another_capture@gmail.com
       - MAILPASS=my_really_super_secret_p4ssw0rd
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - "/home/ctbrec/.config/ctbrec:/app/config:rw"
+      - "/home/ctbrec/media:/app/captures:rw"
+    restart: "unless-stopped"
+```
+
+**NOTE: The following was a request by someone to add to the image and was written by them.
+        I have no way to test it so I don't know if it works or not.**
+
+Send a POST request to an URL with postprocessing parameters.
+
+Data will be sent as `multipart/form-data`.
+
+| Form Field | Description |
+|------------|-------------|
+| file | relative path of the recording |
+| sheet | the contact sheet file |
+| duration | recording file length, format: `hh:mm:ss` |
+| argv | `script.params` string set in server.json, base64encoded |
+
+You need three environment Variables: `HTTP_URL`, `CURL_ARGS`, and `CURL_GET`.
+
+| Variable | Required | Meaning |
+|----------|----------|---------|
+| HTTP_URL  | Mandatory | the url will send the http request to |
+| CURL_ARGS | Optional | extra CURL arguments |
+| CURL_GET  | Optional | Send GET requests instead, no contact sheet |
+
+For example:
+```
+docker run -d \
+    --name=ctbrec-debian \
+    -p 8080:8080 \
+    -p 8443:8443 \
+    -v /home/ctbrec/media:/app/captures:rw \
+    -v /home/ctbrec/.config/ctbrec:/app/config:rw \
+    -e TZ=Australia/Sydney \
+    -e PGID=1000 \
+    -e PUID=1000 \
+    -e HTTP_URL=http://some.url.org \
+    -e CURL_ARGS=some_args \
+    -e CURL_GET=true \
+    jafea7/ctbrec-debian
+```
+
+```yaml
+version: '2.1'
+services:
+  ctbrec-debian:
+    image: jafea7/ctbrec-debian
+    container_name: "CTBRec-Debian"
+    environment:
+      - TZ=Australia/Sydney
+      - PGID=1000
+      - PUID=1000
+      - HTTP_URL=http://some.url.org
+      - CURL_ARGS=some_args
+      - CURL_GET=true
     ports:
       - "8080:8080"
       - "8443:8443"
