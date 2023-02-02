@@ -1,4 +1,5 @@
 #!/bin/sh -e
+# Added updates by @tigobitties
 
 echo "`date '+%T.%3N'` [Start]"
 # Grab passed env variables or set defaults
@@ -29,12 +30,13 @@ fi
 
 echo "`date '+%T.%3N'` [Directories]"
 # Make the config directory, set the owner/permissions of the home directory, copy default server config if necessary
-mkdir -p /app/config
-chown -R ${PUID}:${PGID} ${HOME}
-chmod -R ugo=rwx ${HOME} && chmod -R g+s ${HOME}
-echo "`date '+%T.%3N'` [Defaults]"
-cp --verbose --no-clobber "/app/defaults/server.json" "/app/config/"
-chmod 666 /app/config/server.json
+for d in $HOME/config $HOME/captures $HOME; do
+  mkdir -p $d
+  if ! su -p -c "test -w $d" $usr; then
+    chown -R $PUID:$PGID $d
+    chmod -R ugo=rwX $d && chmod -R g+s $d
+  fi
+done
 
 # Loop while an internet connection is not available
 echo "`date '+%T.%3N'` [Internet]"

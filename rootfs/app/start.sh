@@ -1,8 +1,13 @@
 #!/bin/sh -e
+# Added updates by @tigobitties
 
 cd ${HOME}
 JAVA_HOME="/opt/java/openjdk"
 JAVA="/opt/java/openjdk/bin/java"
+
+echo "`date '+%T.%3N'` [Defaults]"
+cp --verbose --no-clobber "/app/defaults/server.json" "/app/config/"
+chmod 666 /app/config/server.json
 
 # If logback.xml/server.log exists then redirect output to server.log on the host
 # requires the server.log to be mapped by Docker.
