@@ -31,10 +31,9 @@ fi
 echo "`date '+%T.%3N'` [Directories]"
 # Make the config directory, set the owner/permissions of the home directory, copy default server config if necessary
 for d in $HOME/config $HOME/captures $HOME; do
-  mkdir -p $d
   if ! su -p -c "test -w $d" $usr; then
     chown -R $PUID:$PGID $d
-    chmod -R ugo=rwX $d && chmod -R g+s $d
+    chmod -R ugo=rwx $d && chmod -R g+s $d
   fi
 done
 
