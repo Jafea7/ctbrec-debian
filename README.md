@@ -315,9 +315,9 @@ services:
 
 ## Extras
 
-Included are three scripts that will send a contact sheet created by post-processing to a designated Discord, Telegram channel, or an email address.
+Included are four scripts that will send a contact sheet created by post-processing to a designated Discord, Telegram channel, or an email address.
 
-The scripts are called `send2discord.sh`, `send2telegram.sh`, and `send2email.sh` respectively, they reside in the `/app` directory, they are designed to be called as the last step in post-processing, (no point calling them before a contact sheet is created).
+The scripts are called `send2discord.sh`, `send2telegram.sh`, `send2email.sh`, and `send2http.sh` respectively, they reside in the `/app` directory, they are designed to be called as the last step in post-processing, (no point calling them before a contact sheet is created).
 
 The relevant entries for post-processing are, for example:
 ```
