@@ -34,3 +34,6 @@ EXPOSE 8080 8443
 
 # Initialise
 ENTRYPOINT ["/app/init.sh"]
+
+HEALTHCHECK --interval=20s --retries=3 --timeout=3s \
+        CMD curl -f http://localhost:8080 || exit 1
