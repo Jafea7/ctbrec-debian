@@ -16,12 +16,10 @@ COPY rootfs/ /
 
 # Install ffmpeg static build, set permissions
 RUN useradd -u 1000 -U -G users -d /app -s /bin/false ctbrec && \
-    mkdir -p -m=777 /app/captures /app/config && \
-    mkdir -p -m=666 /app/ffmpeg && \
+    mkdir -p /app/captures /app/config /app/ffmpeg && \
     curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg" && \
-    chmod -R 666 /app/* && \
-    chmod 776 /app/*.sh && \
-    chmod 776 /app/ffmpeg/ffmpeg
+    chmod -R a+rwX /app/ && \
+    chmod a+x /app/*.sh /app/ffmpeg/ffmpeg
 
 # Pull base image.
 FROM arm32v7/eclipse-temurin:19-jre

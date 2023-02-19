@@ -29,13 +29,9 @@ else
 fi
 
 echo "`date '+%T.%3N'` [Directories]"
-# Make the config directory, set the owner/permissions of the home directory, copy default server config if necessary
-for d in $HOME/config $HOME/captures $HOME; do
-  if ! su -p -c "test -w $d" $usr; then
-    chown -R $PUID:$PGID $d
-    chmod -R ugo=rwx $d && chmod -R g+s $d
-  fi
-done
+# Set the owner/permissions of the home directory
+chown -R $PUID:$PGID $HOME || true
+su -p -c "chmod -R a+rwx,g+s $HOME" $usr || true
 
 # Loop while an internet connection is not available
 echo "`date '+%T.%3N'` [Internet]"
