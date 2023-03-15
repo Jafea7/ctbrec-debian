@@ -262,8 +262,8 @@ Change the username/password via the WebUI, you will need to log into it again a
   - `"webinterface": true`
 
 Three post-processing steps will be set:
-  - Remux/Transcode using default parameters.
-  - Rename to the following: `"${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}.${fileSuffix}"`
+  - Remux/Transcode to a matroska container.
+  - Rename to the following: `"$sanitize(${modelName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
   - Create contact sheet: 8x7 images, 2560px wide, timecodes enabled, same file name format as the Rename step.
 
 ## Persistent Log File
