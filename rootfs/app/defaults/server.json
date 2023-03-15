@@ -20,17 +20,20 @@
   "concurrentRecordings": 0,
   "confirmationForDangerousActions": false,
   "contactsheetTimestampLook": "font=sans-serif:fontcolor=white:fontsize=60:box=1:boxcolor=black@0.5:boxborderw=5",
+  "dateTimeFormat": "",
   "defaultPriority": 50,
   "determineResolution": false,
-  "disabledSites": [],
-  "downloadFilename": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}",
+  "disabledSites": [
+    "LiveJasmin"
+  ],
+  "downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss)",
   "eventHandlers": [],
   "eventsSuspended": false,
   "fastScrollSpeed": true,
   "fc2livePassword": "",
   "fc2liveUsername": "",
   "ffmpegFileSuffix": "ts",
-  "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -y -f mpegts",
+  "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -movflags faststart -y -f mpegts",
   "fontFamily": "Sans-Serif",
   "fontSize": 14,
   "hlsdlExecutable": "",
@@ -38,13 +41,13 @@
   "httpSecurePort": 8443,
   "httpServer": "localhost",
   "httpTimeout": 10000,
-  "httpUserAgent": "Mozilla/5.0 (Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0",
-  "httpUserAgentMobile": "Mozilla/5.0 (Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0",
+  "httpUserAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0",
+  "httpUserAgentMobile": "Mozilla/5.0 (Android 9.0; Mobile; rv:105.0) Gecko/20100101 Firefox/105.0",
   "ignoredModels": [],
   "lastDownloadDir": "",
   "livePreviews": false,
   "livejasminBaseUrl": "https://www.livejasmin.com",
-  "livejasminBetaAcknowledged": false,
+  "livejasminBetaAcknowledged": true,
   "livejasminPassword": "",
   "livejasminUsername": "",
   "localRecording": true,
@@ -84,23 +87,26 @@
   "postProcessors": [
     {
       "type": "ctbrec.recorder.postprocessing.Remux",
+      "enabled": true,
       "config": {
-        "ffmpeg.args": "-c:v copy -c:a copy -bsf:a aac_adtstoasc -movflags faststart -f mp4",
-        "file.ext": "mp4"
+        "ffmpeg.args": "-c:v copy -c:a copy -y -f matroska",
+        "file.ext": "mkv"
       }
     },
     {
       "type": "ctbrec.recorder.postprocessing.Rename",
+      "enabled": true,
       "config": {
-        "filename.template": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}.${fileSuffix}"
+        "filename.template": "$sanitize(${modelName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"
       }
     },
     {
       "type": "ctbrec.recorder.postprocessing.CreateContactSheet",
+      "enabled": true,
       "config": {
         "padding": "2",
         "burn_in_timestamp": "true",
-        "filename": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}.jpg",
+        "filename": "$sanitize(${modelName})_$format(${localDateTime},yyyyMMdd-hhmmss).jpg",
         "columns": "8",
         "background": "0x333333",
         "total_size": "2560",
@@ -108,11 +114,7 @@
       }
     }
   ],
-  "proxyHost": "",
-  "proxyPassword": "",
-  "proxyPort": "",
   "proxyType": "DIRECT",
-  "proxyUser": "",
   "recentlyWatched": false,
   "recordLater": [],
   "recordLaterTableColumnOrder": [],
@@ -121,7 +123,7 @@
   "recordLaterTableSortColumn": "",
   "recordLaterTableSortType": "",
   "recordSingleFile": false,
-  "recordUntilDefaultDurationInMinutes": 30,
+  "recordUntilDefaultDurationInMinutes": 1440,
   "recordedModelsPerSite": false,
   "recordedModelsTableColumnOrder": [],
   "recordedModelsTableColumnVisibility": {},
@@ -149,6 +151,7 @@
   "splitRecordingsAfterSecs": 0,
   "splitRecordingsBiggerThanBytes": 0,
   "splitStrategy": "DONT",
+  "startMinimized": false,
   "startTab": "Recording",
   "streamatePassword": "",
   "streamateUsername": "",
@@ -156,6 +159,7 @@
   "stripchatUseXhamster": false,
   "stripchatUsername": "",
   "tabOrder": [],
+  "tabsSortable": true,
   "thumbWidth": 180,
   "timeoutRecordingEndingAt": "00:00",
   "timeoutRecordingStartingAt": "00:00",
