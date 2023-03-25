@@ -1,0 +1,47 @@
+--- v4-server.json	2023-03-24 04:56:28.829961000 -0700
++++ v5-server.json	2023-03-24 19:08:23.095884000 -0700
+@@ -23,8 +23,11 @@
+   "dateTimeFormat": "",
+   "defaultPriority": 50,
+   "determineResolution": false,
+-  "disabledSites": [],
+-  "downloadFilename": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}",
++  "disabledSites": [
++    "LiveJasmin",
++    "SecretFriends"
++  ],
++  "downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss)",
+   "eventHandlers": [],
+   "eventsSuspended": false,
+   "fastScrollSpeed": true,
+@@ -85,23 +88,26 @@
+   "postProcessors": [
+     {
+       "type": "ctbrec.recorder.postprocessing.Remux",
++      "enabled": true,
+       "config": {
+-        "ffmpeg.args": "-c:v copy -c:a copy -bsf:a aac_adtstoasc -movflags faststart -f mp4",
+-        "file.ext": "mp4"
++        "ffmpeg.args": "-c:v copy -c:a copy -y -f matroska",
++        "file.ext": "mkv"
+       }
+     },
+     {
+       "type": "ctbrec.recorder.postprocessing.Rename",
++      "enabled": true,
+       "config": {
+-        "filename.template": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}.${fileSuffix}"
++        "filename.template": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss).${fileSuffix}"
+       }
+     },
+     {
+       "type": "ctbrec.recorder.postprocessing.CreateContactSheet",
++      "enabled": true,
+       "config": {
+         "padding": "2",
+         "burn_in_timestamp": "true",
+-        "filename": "${modelSanitizedName}_${siteSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}.jpg",
++        "filename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss).jpg",
+         "columns": "8",
+         "background": "0x333333",
+         "total_size": "2560",

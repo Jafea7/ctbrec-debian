@@ -30,8 +30,10 @@ fi
 
 echo "`date '+%T.%3N'` [Directories]"
 # Set the owner/permissions of the home directory
-chown -R $PUID:$PGID $HOME || true
-su -p -c "chmod -R a+rwx,g+s $HOME" $usr || true
+if ! chown -R $PUID:$PGID "$HOME" 2>/dev/null; then
+  echo - unable to change ownership of $HOME
+fi
+su -p $usr -c "chmod -R a+rwx,g+s $HOME" || true
 
 # Loop while an internet connection is not available
 echo "`date '+%T.%3N'` [Internet]"

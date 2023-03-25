@@ -20,11 +20,12 @@
   "concurrentRecordings": 0,
   "confirmationForDangerousActions": false,
   "contactsheetTimestampLook": "font=sans-serif:fontcolor=white:fontsize=60:box=1:boxcolor=black@0.5:boxborderw=5",
-  "dateTimeFormat": "",
+  "dateTimeFormat": "$format(${localDateTime},yyyyMMdd-HHmmss)",
   "defaultPriority": 50,
   "determineResolution": false,
   "disabledSites": [
-    "LiveJasmin"
+    "LiveJasmin",
+    "SecretFriends"
   ],
   "downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss)",
   "eventHandlers": [],
@@ -33,7 +34,7 @@
   "fc2livePassword": "",
   "fc2liveUsername": "",
   "ffmpegFileSuffix": "ts",
-  "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -movflags faststart -y -f mpegts",
+  "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -y -f mpegts",
   "fontFamily": "Sans-Serif",
   "fontSize": 14,
   "hlsdlExecutable": "",
@@ -97,7 +98,7 @@
       "type": "ctbrec.recorder.postprocessing.Rename",
       "enabled": true,
       "config": {
-        "filename.template": "$sanitize(${modelName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"
+        "filename.template": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss).${fileSuffix}"
       }
     },
     {
@@ -106,7 +107,7 @@
       "config": {
         "padding": "2",
         "burn_in_timestamp": "true",
-        "filename": "$sanitize(${modelName})_$format(${localDateTime},yyyyMMdd-hhmmss).jpg",
+        "filename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss).jpg",
         "columns": "8",
         "background": "0x333333",
         "total_size": "2560",
