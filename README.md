@@ -255,7 +255,7 @@ After a fresh install and the web interface is enabled, the default login is:
 Change the username/password via the WebUI, you will need to log into it again after saving.
 
 **NOTE**: A fresh start of the image will include a current default server.json, (if it doesn't exist already), with the following options set:
-  - `"downloadFilename": "${siteSanitizedName}_${modelSanitizedName}_${localDateTime(yyyyMMdd-HHmmss)}"`
+  - `"downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
   - `"recordingsDirStructure": "ONE_PER_MODEL"`
   - `"totalModelCountInTitle": true`
   - `"transportLayerSecurity": true`
@@ -263,7 +263,7 @@ Change the username/password via the WebUI, you will need to log into it again a
 
 Three post-processing steps will be set:
   - Remux/Transcode to a matroska container.
-  - Rename to the following: `"$sanitize(${modelName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
+  - Rename to the following: `"$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
   - Create contact sheet: 8x7 images, 2560px wide, timecodes enabled, same file name format as the Rename step.
 
 ## Persistent Log File
@@ -324,7 +324,7 @@ The relevant entries for post-processing are, for example:
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
-        "script.params": "${absolutePath} ${modelDisplayName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.params": "${absolutePath} ${modelDisplayName} $format(${localDateTime},yyyyMMdd-hhmmss)}",
         "script.executable": "/app/send2discord.sh"
       }
     }
@@ -333,7 +333,7 @@ The relevant entries for post-processing are, for example:
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
-        "script.params": "${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.params": "${absolutePath} ${modelDisplayName} $sanitize(${siteName}) $format(${localDateTime},yyyyMMdd-hhmmss)}",
         "script.executable": "/app/send2telegram.sh"
       }
     }
@@ -342,7 +342,7 @@ The relevant entries for post-processing are, for example:
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
-        "script.params": "${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.params": "${absolutePath} ${modelDisplayName} $sanitize(${siteName}) $format(${localDateTime},yyyyMMdd-hhmmss)}",
         "script.executable": "/app/send2email.sh"
       }
     }
@@ -352,7 +352,7 @@ The relevant entries for post-processing are, for example:
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
-        "script.params": "${absolutePath} ${modelDisplayName} ${siteName} ${localDateTime(yyyyMMdd-HHmmss)}",
+        "script.params": "${absolutePath} ${modelDisplayName} $sanitize(${siteName}) $format(${localDateTime},yyyyMMdd-hhmmss)}",
         "script.executable": "/app/send2http.sh"
       }
     }
@@ -554,3 +554,23 @@ services:
 ```
 
 For `docker-compose` you can also add the variables to the `.env` file and reference them from within the `docker-compose.yml` file.
+
+
+**plcheck.sh**
+
+A simple script that will check if `playlist.m3u8` is terminated correctly, only useful if you don't record as a single file.
+
+If the container is terminated without existing captures being finished correctly the `playlist.m3u8` file won't be terminated with `#EXT-X-ENDLIST` which will cause ffmpeg to truncate the recording and take excessive time to process.
+
+Add this script as the **first step** in post-processing, if `playlist.m3u8` doesn't exist or is correctly terminated it will exit otherwise it will append `#EXT-X-ENDLIST` to the file which will allow post-processing to be re-run without causing problems.
+
+The relevant entry for post-processing is:
+```
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "${absolutePath}",
+        "script.executable": "/app/plcheck.sh"
+      }
+    }
+```
