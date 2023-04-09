@@ -10,18 +10,27 @@ function require () {
 require diff
 require patch
 
+any5=/app/config/$(find /app/config -mindepth 1 -maxdepth 1 -type d -name '5.*' ! -name '*_backup_*' | cut -f4 -d/ | tail -1)
+
+# a v5 config folder already exists, we've been through this
+[ "$any5" != "/app/config/" ] && exit 0
+
 latest5=/app/config/${CTBVER:-5.0.0}
 latest5_config="$latest5/server.json"
 
 # if the base config file is the same as the default, this must be a new install
 diff /app/{defaults,config}/server.json >/dev/null && exit 0
 
+# find the latest v4 config
+latest4=/app/config/$(find /app/config -mindepth 1 -maxdepth 1 -type d -name '4.*' ! -name '*_backup_*' | cut -f4 -d/ | sort -t. -k2,2n -k 3,3n | tail -1)
+
+# couldn't find a v4 config, but /app/config/server.json differs from defaults
+[ "$latest4" = "/app/config/" ] && exit 0
+
 # copy the latest v4 config folder to v5
 if [ ! -d "$latest5" ]; then
   echo - attempting to migrate v4 config to v5
 
-  # find the latest v4 config
-  latest4=/app/config/$(find /app/config -mindepth 1 -maxdepth 1 -type d -name '4.*' ! -name '*_backup_*' | cut -f4 -d/ | sort -t. -k2,2n -k 3,3n | tail -1)
   latest4_config="$latest4/server.json"
   if [ -f "$latest4_config" ]; then
     echo - found the most recent config at "$latest4_config"
