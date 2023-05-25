@@ -31,7 +31,7 @@ FROM eclipse-temurin:19-jre
 # Copy app folder with ffmpeg from builder
 COPY --from=builder /app /app
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends less patch && \
+    apt-get install -y --no-install-recommends less patch inetutils-ping && \
     rm -rf /var/lib/apt/lists/*
 
 ARG CTBVER
