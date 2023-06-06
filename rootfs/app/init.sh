@@ -37,7 +37,7 @@ su -p $usr -c "chmod -R a+rwx,g+s $HOME" || true
 
 # Loop while an internet connection is not available
 echo "`date '+%T.%3N'` [Internet]"
-while ! ping -qc1 -W5 dns.google
+while ! ping -qc1 -W5 dns.google >/dev/null 2>&1
 do
   echo "`date '+%T.%3N'` [Internet failed]: Waiting 30 seconds ..."
   sleep 30
