@@ -18,4 +18,4 @@ if [ -f /app/config/logback.xml ] && [ -f /app/config/server.log ]; then
   exec >> /app/config/server.log
 fi
 
-$JAVA -Xms256m -Xmx768m -cp ctbrec-server-5.1.1-final.jar -Dfile.encoding=utf-8 -Dctbrec.config.dir=/app/config -Dctbrec.config=server.json ctbrec.recorder.server.HttpServer
+$JAVA -Xms256m -Xmx768m -cp ctbrec-server-5.1.2-final.jar -Dfile.encoding=utf-8 -Dctbrec.config.dir=/app/config -Dctbrec.config=server.json ctbrec.recorder.server.HttpServer
