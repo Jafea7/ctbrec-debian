@@ -113,6 +113,13 @@
         "total_size": "2560",
         "rows": "7"
       }
+    },
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "",
+        "script.executable": "/app/scripts/reclean.sh"
+      }
     }
   ],
   "proxyType": "DIRECT",
