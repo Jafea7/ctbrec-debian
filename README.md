@@ -261,10 +261,11 @@ Change the username/password via the WebUI, you will need to log into it again a
   - `"transportLayerSecurity": true`
   - `"webinterface": true`
 
-Three post-processing steps will be set:
+Four default post-processing steps will be set:
   - Remux/Transcode to a matroska container.
   - Rename to the following: `"$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
   - Create contact sheet: 8x7 images, 2560px wide, timecodes enabled, same file name format as the Rename step.
+  - Script `reclean.sh` to remove orphaned JSON files.
 
 ## Persistent Log File
 
@@ -571,6 +572,26 @@ The relevant entry for post-processing is:
       "config": {
         "script.params": "${absolutePath}",
         "script.executable": "/app/plcheck.sh"
+      }
+    }
+```
+
+
+**reclean.sh**
+
+Script that cleans the `ctbrec/recordings` directory of orphaned JSON files.
+
+It lists all JSON files in the directory, checks to see if the corresponding **video file** exists, if it doesn't it will delete the JSON __provided__ the status is `FINISHED`.
+
+This script should be added as the **last step** in post-processing.
+
+The relevant entry for post-processing is:
+```
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "",
+        "script.executable": "/app/reclean.sh"
       }
     }
 ```
