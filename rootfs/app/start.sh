@@ -9,9 +9,6 @@ echo "`date '+%T.%3N'` [Defaults]"
 cp --verbose --no-clobber "/app/defaults/server.json" "/app/config/"
 chmod 666 /app/config/server.json
 
-# Migrates v4 config to v5 (due to post-process changes)
-/app/migrate-config-v5.sh
-
 # If logback.xml/server.log exists then redirect output to server.log on the host
 # requires logback.xml and server.log to be mapped by Docker.
 if [ -f /app/config/logback.xml ] && [ -f /app/config/server.log ]; then
