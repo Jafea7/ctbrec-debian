@@ -8,18 +8,28 @@ services:
       - TZ=${TZ}
       - PGID=${PGID}
       - PUID=${PUID}
+# The following variables are used by reclean.py to remove orphaned JSON files
+      - SRVURL=${SRVURL}
+      - SRVUSR=${SRVUSR}
+      - SRVPSS=${SRVPSS}
+# The following variable is for using the optional Discord notification script
+#      - DISCORD=${DISCORD}
+# The following variables are for using the optional Telegram notification script
+#      - CHAT_ID=${CHAT_ID}
+#      - TOKEN=${TOKEN}
+# The following variables are for using the optional email notification script
+#      - MAILSERVER=${MAILSERVER}
+#      - MAILFROM=${MAILFROM}
+#      - MAILTO=${MAILTO}
+#      - MAILPASS=${MAILPASS}
     volumes:
       - "${CONFIG}/ctbrec:/app/config"
       - "${MEDIA}:/app/captures"
-# Uncomment the following two lines to enable logging to a file
-# The files must exist **before** running the container.
+      - "${LOGS}:/app/logs"
+# If you want to change what's logged, edit a new logback.xml
+# and map it on the host
+# ** Untested but not significantly different from the previous method **
 #      - "${CONFIG}/ctbrec/logback.xml:/app/logback.xml"
-#      - "${CONFIG}/ctbrec/server.log:/app/config/server.log"
-# The following variable is for using the optional Discord notification script
-#      - DISCORD=https://discordapp.com/api/webhooks/<channelID>/<token>
-# The following variables are for using the optional Telegram notification script
-#      - CHAT_ID=<channel id>
-#      - TOKEN=<bot token>
     ports:
       - 8080:8080
       - 8443:8443

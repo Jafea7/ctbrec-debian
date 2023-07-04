@@ -5,14 +5,15 @@ cd ${HOME}
 JAVA_HOME="/opt/java/openjdk"
 JAVA="/opt/java/openjdk/bin/java"
 
+# Copy default settings if it doesn't exist
 echo "`date '+%T.%3N'` [Defaults]"
 cp --verbose --no-clobber "/app/defaults/server.json" "/app/config/"
 chmod 666 /app/config/server.json
 
-# If logback.xml/server.log exists then redirect output to server.log on the host
-# requires logback.xml and server.log to be mapped by Docker.
-if [ -f /app/config/logback.xml ] && [ -f /app/config/server.log ]; then
-  exec >> /app/config/server.log
-fi
+# Enable post-processing by default
+[ ! -f "/app/config/dopp" ] && touch "/app/config/dopp"
+
+# Redirect output to server.log on the host if /app/logs is mapped
+exec >> /app/logs/server.log
 
 $JAVA -Xms256m -Xmx768m -cp ctbrec-server-5.1.2-final.jar -Dfile.encoding=utf-8 -Dctbrec.config.dir=/app/config -Dctbrec.config=server.json ctbrec.recorder.server.HttpServer
