@@ -23,10 +23,7 @@
   "dateTimeFormat": "$format(${localDateTime},yyyyMMdd-HHmmss)",
   "defaultPriority": 50,
   "determineResolution": false,
-  "disabledSites": [
-    "LiveJasmin",
-    "SecretFriends"
-  ],
+  "disabledSites": [],
   "downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss)",
   "eventHandlers": [],
   "eventsSuspended": false,
@@ -42,8 +39,8 @@
   "httpSecurePort": 8443,
   "httpServer": "localhost",
   "httpTimeout": 10000,
-  "httpUserAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:105.0) Gecko/20100101 Firefox/105.0",
-  "httpUserAgentMobile": "Mozilla/5.0 (Android 9.0; Mobile; rv:105.0) Gecko/20100101 Firefox/105.0",
+  "httpUserAgent": "Mozilla/5.0 (X11; Linux i686; rv:109.0) Gecko/20100101 Firefox/114.0",
+  "httpUserAgentMobile": "Mozilla/5.0 (Android 13; Mobile; rv:109.0) Gecko/114.0 Firefox/114.0",
   "ignoredModels": [],
   "lastDownloadDir": "",
   "livePreviews": false,
@@ -87,6 +84,20 @@
   "postProcessingThreads": 1,
   "postProcessors": [
     {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "",
+        "script.executable": "/app/dopp.sh"
+      }
+    },
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "${absolutePath}",
+        "script.executable": "/app/plcheck.sh"
+      }
+    },
+    {
       "type": "ctbrec.recorder.postprocessing.Remux",
       "enabled": true,
       "config": {
@@ -118,7 +129,7 @@
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
         "script.params": "",
-        "script.executable": "/app/scripts/reclean.sh"
+        "script.executable": "/app/reclean.py"
       }
     }
   ],

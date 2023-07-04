@@ -23,7 +23,7 @@ RUN useradd -u 1000 -U -G users -d /app -s /bin/false ctbrec && \
     if [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
     if [ "$TARGETPLATFORM" = "linux/arm64" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
     chmod -R a+rwX /app/ && \
-    chmod a+x /app/*.sh /app/ffmpeg/ffmpeg
+    chmod a+x /app/*.sh /app/*.py /app/ffmpeg/ffmpeg
 
 # Pull base image.
 FROM eclipse-temurin:19-jre
@@ -31,7 +31,10 @@ FROM eclipse-temurin:19-jre
 # Copy app folder with ffmpeg from builder
 COPY --from=builder /app /app
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends less patch inetutils-ping && \
+    apt-get install -y --no-install-recommends less inetutils-ping python3 python3-pip && \
+    pip3 install urllib3 requests && \
+    apt-get -y remove python3-pip && \
+    apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/*
 
 ARG CTBVER
