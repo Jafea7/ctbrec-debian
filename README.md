@@ -384,7 +384,7 @@ Automatically removes orphaned JSON files from the `<config>/recordings` directo
 
 `reclean.py` uses the server API Python script provided by **Scooter**.
 
-By default this step is the last in post-processing and the factors required for a JSON file to be removed are:
+By default this step should be the last in post-processing and the factors required for a JSON file to be removed are:
 - the media file does not exist;
 - the status of the recording was `FINISHED`.
 
