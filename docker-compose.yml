@@ -3,15 +3,17 @@ services:
 # CTBRec streaming recorder
   ctbrec-debian:
     image: "jafea7/ctbrec-debian"
-    container_name: "CTBRec-Jafea7-Debian"
+    container_name: "ctbrec-debian"
     environment:
       - TZ=${TZ}
       - PGID=${PGID}
       - PUID=${PUID}
-# The following variables are used by reclean.py to remove orphaned JSON files
+# The following variables are used by reclean.py & reclaim.py
       - SRVURL=${SRVURL}
       - SRVUSR=${SRVUSR}
       - SRVPSS=${SRVPSS}
+# The following variable is used for reclaim.py, the value is in bytes
+#      - RECOVER=${RECOVER}
 # The following variable is for using the optional Discord notification script
 #      - DISCORD=${DISCORD}
 # The following variables are for using the optional Telegram notification script
