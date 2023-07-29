@@ -432,7 +432,7 @@ services:
 
 Automatically removes orphaned JSON files from the `<config>/recordings` directory left there by the removal of the media file.
 
-By default this step is the last in post-processing and the factors required for a JSON file to be removed are:
+This step should be the last in post-processing and the factors required for a JSON file to be removed are:
 - the media file does not exist;
 - the status of the recording was `FINISHED`.
 
@@ -449,13 +449,15 @@ The relevant entry for post-processing is:
 
 **reclaim.py**
 
-`reclaim.py` recovers drive space by __automatically deleting the oldest non-pinned captures__ until the required amount of drive space is free.
+`reclaim.py` recovers drive space by **automatically deleting the oldest non-pinned captures** until the required amount of drive space is free.
 
-Besides the above three specified environment variables it requires one more to specify the minimum amount of space to recover, it can be specified in `docker run` command, `docker-compose.yml`, or `.env` file.
+Besides the above three environment variables it requires one more to specify the minimum amount of space to recover, it can be specified in `docker run` command, `docker-compose.yml`, or `.env` file.
 
 | Variable | Required | Description |
 -----------|----------|-------------|
 | RECOVER | Mandatory | Specifies the minimum amount of space to recover in bytes |
+
+**NOTE:** **Do NOT** set the value so that the resultant required free space is larger than the available drive space.
 
 This script should be used by adding to the `Events & Actions` section of the settings.
 
