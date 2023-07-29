@@ -320,7 +320,7 @@ services:
     restart: "unless-stopped"
 ```
 
-**NOTE:** With the persistent log enabled the container log output will only be available up until the CTBRec server starts, it's then redirected to the `server.log` file.
+**NOTE:** With the persistent log the container output will only be available up until the CTBRec server starts, it's then redirected to the `server.log` file.
 
 ## Extras
 
@@ -368,7 +368,7 @@ If the container is terminated without existing captures being finished correctl
 By default this step happens before any following remux, (obviously), in post-processing, if `playlist.m3u8` doesn't exist, (in the case of `Record Single File` being enabled), or is correctly terminated it will exit otherwise it will append `#EXT-X-ENDLIST` to the file which will allow post-processing to be re-run without causing problems.
 
 The relevant entry for post-processing is:
-```
+```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
@@ -378,28 +378,7 @@ The relevant entry for post-processing is:
     }
 ```
 
-**reclean.py**
-
-Automatically removes orphaned JSON files from the `<config>/recordings` directory left there by the removal of the media file.
-
-`reclean.py` uses the server API Python script provided by **Scooter**.
-
-By default this step should be the last in post-processing and the factors required for a JSON file to be removed are:
-- the media file does not exist;
-- the status of the recording was `FINISHED`.
-
-The relevant entry for post-processing is:
-```
-    {
-      "type": "ctbrec.recorder.postprocessing.Script",
-      "config": {
-        "script.params": "",
-        "script.executable": "/app/reclean.py"
-      }
-    }
-```
-
-reclean.py requires three environment variables to be specified, `SRVURL`, `SRVUSR`, and `SRVPSS`, these specify the WebUI URL of the server and the user and password required to access it.
+**NOTE: The following Python scripts use the server API Python script that was created by *Scooter* and require three environment variables to be able to run.**
 
 You can specify them in a `docker run` command, `docker-compose.yml`, or `.env` file.
 
@@ -449,14 +428,73 @@ services:
     restart: "unless-stopped"
 ```
 
+**reclean.py**
+
+Automatically removes orphaned JSON files from the `<config>/recordings` directory left there by the removal of the media file.
+
+By default this step is the last in post-processing and the factors required for a JSON file to be removed are:
+- the media file does not exist;
+- the status of the recording was `FINISHED`.
+
+The relevant entry for post-processing is:
+```json
+    {
+      "type": "ctbrec.recorder.postprocessing.Script",
+      "config": {
+        "script.params": "",
+        "script.executable": "/app/reclean.py"
+      }
+    }
+```
+
+**reclaim.py**
+
+`reclaim.py` recovers drive space by __automatically deleting the oldest non-pinned captures__ until the required amount of drive space is free.
+
+Besides the above three specified environment variables it requires one more to specify the minimum amount of space to recover, it can be specified in `docker run` command, `docker-compose.yml`, or `.env` file.
+
+| Variable | Required | Description |
+-----------|----------|-------------|
+| RECOVER | Mandatory | Specifies the minimum amount of space to recover in bytes |
+
+This script should be used by adding to the `Events & Actions` section of the settings.
+
+For example:
+```json
+  "eventHandlers": [
+    {
+      "actions": [
+        {
+          "configuration": {
+            "file": "/app/reclaim.py"
+          },
+          "name": "execute reclaim.py",
+          "type": "ctbrec.event.ExecuteProgram"
+        }
+      ],
+      "event": "NO_SPACE_LEFT",
+      "id": "5a1beebb-32dd-43cd-9848-b894121374fe",
+      "name": "Delete oldest video",
+      "predicates": [
+        {
+          "configuration": {},
+          "name": "no space left",
+          "type": "ctbrec.event.MatchAllPredicate"
+        }
+      ]
+    }
+  ],
+ ```
+ 
+
 ### Send2 Scripts
 
 Included are four scripts that will send a contact sheet created by post-processing to a designated Discord, Telegram channel, email address, or POST to HTTP site.
 
-The scripts are called `send2discord.sh`, `send2telegram.sh`, `send2email.sh`, and `send2http.sh` respectively, they reside in the `/app` directory, they are designed to be called as the last step in post-processing, (no point calling them before a contact sheet is created).
+The scripts are called `send2discord.sh`, `send2telegram.sh`, `send2email.sh`, and `send2http.sh` respectively, they reside in the `/app` directory, they are designed to be called after creation of the contact sheet, (no point calling them before a contact sheet is created).
 
 The relevant entries for post-processing are, for example:
-```
+```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
@@ -465,7 +503,7 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
-```
+```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
@@ -474,7 +512,7 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
-```
+```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
@@ -483,8 +521,7 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
-
-```
+```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
