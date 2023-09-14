@@ -1,34 +1,35 @@
-# Docker container for CTBRec server based on Debian/OpenJDK19
+# Docker container for CTBRec server
 
 ---
 
 CTBRec is a streaming media recorder.
 
+**NOTE: Recommend you create a new container using the info below.**
+
 ---
 
 ## Table of Content
 
-   * [Docker container for CTBRec server](#docker-container-for-ctbrec-server)
-      * [Table of Content](#table-of-content)
-      * [Quick Start](#quick-start)
-      * [Usage](#usage)
-         * [Environment Variables](#environment-variables)
-         * [Data Volumes](#data-volumes)
-         * [Ports](#ports)
-         * [Changing Parameters of a Running Container](#changing-parameters-of-a-running-container)
-      * [Docker Compose File](#docker-compose-file)
-      * [QNap Installs](#qnap-installs)
-      * [Docker Image Update](#docker-image-update)
-         * [Synology](#synology)
-         * [unRAID](#unraid)
-      * [Accessing the GUI](#accessing-the-gui)
-      * [Shell Access](#shell-access)
-      * [Default Web Interface Access](#default-web-interface-access)
-      * [Persistent Log File](#persistent-log-file)
-      * [Extras](#extras)
-         * [Ancillary Scripts](#ancillary-scripts)
-         * [Send2 Scripts](#send2-scripts)
-
+* [Docker container for CTBRec server](#docker-container-for-ctbrec-server)
+  * [Table of Content](#table-of-content)
+  * [Quick Start](#quick-start)
+  * [Usage](#usage)
+    * [Environment Variables](#environment-variables)
+    * [Data Volumes](#data-volumes)
+    * [Ports](#ports)
+    * [Changing Parameters of a Running Container](#changing-parameters-of-a-running-container)
+  * [Docker Compose File](#docker-compose-file)
+  * [QNap Installs](#qnap-installs)
+  * [Docker Image Update](#docker-image-update)
+    * [Synology](#synology)
+    * [unRAID](#unraid)
+  * [Accessing the GUI](#accessing-the-gui)
+  * [Shell Access](#shell-access)
+  * [Default Web Interface Access](#default-web-interface-access)
+  * [Logging](#logging)
+  * [Extras](#extras)
+    * [Ancillary Scripts](#ancillary-scripts)
+    * [Send2 Scripts](#send2-scripts)
 
 ## Quick Start
 
@@ -36,14 +37,14 @@ CTBRec is a streaming media recorder.
 and parameters should be adjusted to your need.
 
 Launch the CTBRec server docker container with the following command:
-```
+
+```text
 docker run -d \
     --name=ctbrec-debian \
     -p 8080:8080 \
     -p 8443:8443 \
     -v /home/ctbrec/media:/app/captures:rw \
     -v /home/ctbrec/.config/ctbrec:/app/config:rw \
-    -v /home/ctbrec/logs:/app/logs:rw \
     -e TZ=Australia/Sydney \
     -e PGID=1000 \
     -e PUID=1000 \
@@ -51,12 +52,12 @@ docker run -d \
 ```
 
 Where:
-  - `/home/ctbrec/.config/ctbrec`: This is where the application stores its configuration and any files needing persistency.
-  - `/home/ctbrec/media`:          This is where the application stores recordings.
-  - `/home/ctbrec/logs`:           This is where the application stores the server.log.
-  - `TZ`:                          The timezone you want the application to use, files created will be referenced to this.
-  - `PGID`:                        The Group ID that CTBRec will run under.
-  - `PUID`:                        The User ID that CTBRec will run under.
+
+* `/home/ctbrec/.config/ctbrec`: This is where the application stores its configuration and any files needing persistency.
+* `/home/ctbrec/media`:          This is where the application stores recordings.
+* `TZ`:                          The timezone you want the application to use, files created will be referenced to this.
+* `PGID`:                        The Group ID that CTBRec will run under.
+* `PUID`:                        The User ID that CTBRec will run under.
 
 Browse to `http://your-host-ip:8080` to access the CTBRec web interface, (or `https://your-host-ip:8443` if TLS is enabled).
 
@@ -64,7 +65,7 @@ Browse to `http://your-host-ip:8080` to access the CTBRec web interface, (or `ht
 
 ## Usage
 
-```
+```text
 docker run [-d] \
     --name=ctbrec-debian \
     [-e <VARIABLE_NAME>=<VALUE>]... \
@@ -72,6 +73,7 @@ docker run [-d] \
     [-p <HOST_PORT>:<CONTAINER_PORT>]... \
     jafea7/ctbrec-debian
 ```
+
 | Parameter | Description |
 |-----------|-------------|
 | -d        | Run the container in the background.  If not set, the container runs in the foreground. |
@@ -99,9 +101,8 @@ format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
 
 | Container path  | Permissions | Description |
 |-----------------|-------------|-------------|
-|`/app/config`| rw | This is where the application stores its configuration, log and any files needing persistency. |
+|`/app/config`| rw | This is where the application stores its configuration and any files needing persistency. |
 |`/app/captures`| rw | This is where the application stores recordings. |
-|`/app/logs`| rw | This is where the application stores the server.log. |
 
 ### Ports
 
@@ -124,22 +125,25 @@ The following steps describe the method used to add, remove or update
 parameter(s) of an existing container.  The generic idea is to destroy and
 re-create the container:
 
-  1. Stop the container (if it is running):
-```
-docker stop ctbrec-debian
-```
-  2. Remove the container:
-```
-docker rm ctbrec-debian
-```
-  3. Create/start the container using the `docker run` command, by adjusting
-     parameters as needed.
+1. Stop the container (if it is running):
 
-**NOTE**: Since all application's data is saved under the `/app/config`,
-`/app/captures`, and `/app/logs` container folders, destroying and re-creating
+   ```text
+   docker stop ctbrec-debian
+   ```
+
+2. Remove the container:
+
+   ```text
+   docker rm ctbrec-debian
+   ```
+
+3. Create/start the container using the `docker run` command, by adjusting parameters as needed.
+
+**NOTE**: Since all application's data is saved under the `/app/config` and
+`/app/captures` container folders, destroying and re-creating
 a container is not a problem: nothing is lost and the application comes back
-with the same state (as long as the mapping of the `/app/config`,
-`/app/captures`, and `/app/logs` folders remain the same).
+with the same state (as long as the mapping of the `/app/config` and
+`/app/captures` are the same as previously used).
 
 ## Docker Compose File
 
@@ -165,7 +169,6 @@ services:
     volumes:
       - "/home/ctbrec/.config/ctbrec:/app/config:rw"
       - "/home/ctbrec/media:/app/captures:rw"
-      - "/home/ctbrec/logs:/app/logs:rw"
     restart: "unless-stopped"
 ```
 
@@ -180,23 +183,29 @@ You may need to set `PGID = 0` and `PUID = 0`, ie. CTBRec runs as root within th
 If the system on which the container runs doesn't provide a way to easily update
 the Docker image, the following steps can be followed:
 
-  1. Fetch the latest image:
-```
-docker pull jafea7/ctbrec-debian
-```
-  2. Stop the container:
-```
-docker stop jafea7/ctbrec-debian
-```
-  3. Remove the container:
-```
-docker rm jafea7/ctbrec-debian
-```
-  4. Start the container using the `docker run` command.
+1. Fetch the latest image:
 
+   ```text
+   docker pull jafea7/ctbrec-debian
+   ```
+
+2. Stop the container:
+
+   ```text
+   docker stop jafea7/ctbrec-debian
+   ```
+
+3. Remove the container:
+
+   ```text
+   docker rm jafea7/ctbrec-debian
+   ```
+
+4. Start the container using the `docker run` command.
 
 **Updating using docker-compose:**
-```
+
+```text
 docker-compose pull && docker-compose up -d
 ```
 
@@ -205,19 +214,20 @@ docker-compose pull && docker-compose up -d
 For owners of a Synology NAS, the following steps can be used to update a
 container image.
 
-  1.  Open the *Docker* application.
-  2.  Click on *Registry* in the left pane.
-  3.  In the search bar, type the name of the container (`jafea7/ctbrec-debian`).
-  4.  Select the image, click *Download* and then choose the `latest` tag.
-  5.  Wait for the download to complete.  A  notification will appear once done.
-  6.  Click on *Container* in the left pane.
-  7.  Select your CTBRec server container.
-  8.  Stop it by clicking *Action*->*Stop*.
-  9.  Clear the container by clicking *Action*->*Clear*.  This removes the
-      container while keeping its configuration.
-  10. Start the container again by clicking *Action*->*Start*.
+1. Open the *Docker* application.
+2. Click on *Registry* in the left pane.
+3. In the search bar, type the name of the container (`jafea7/ctbrec-debian`).
+4. Select the image, click *Download* and then choose the `latest` tag.
+5. Wait for the download to complete.  A  notification will appear once done.
+6. Click on *Container* in the left pane.
+7. Select your CTBRec server container.
+8. Stop it by clicking *Action*->*Stop*.
+9. Clear the container by clicking *Action*->*Clear*.  This removes the
+    container while keeping its configuration.
+10. Start the container again by clicking *Action*->*Start*.
   
   **NOTE**:  The container may temporarily disappear from the list while it is re-created.
+
 ---
 
 ### unRAID
@@ -233,12 +243,13 @@ For unRAID, a container image can be updated by following these steps:
 Assuming that container's ports are mapped to the same host's ports, the
 interface of the application can be accessed with a web browser at:
 
-```
+```text
 http://<HOST IP ADDR>:8080
 ```
+
 Or if TLS is enabled:
 
-```
+```text
 https://<HOST IP ADDR>:8443
 ```
 
@@ -246,7 +257,7 @@ https://<HOST IP ADDR>:8443
 
 To get shell access to the running container, execute the following command:
 
-```
+```text
 docker exec -ti CONTAINER sh
 ```
 
@@ -256,98 +267,63 @@ creation (e.g. `ctbrec-debian`).
 ## Default Web Interface Access
 
 After a fresh install and the web interface is enabled, the default login is:
-  - Username: `ctbrec`
-  - Password: `sucks`
+
+* Username: `ctbrec`
+* Password: `sucks`
 
 Change the username/password via the WebUI, you will need to log into it again after saving.
 
 **NOTE**: A fresh start of the image will include a current default server.json, (if it doesn't exist already), with the following options set:
-  - `"downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
-  - `"recordingsDirStructure": "ONE_PER_MODEL"`
-  - `"totalModelCountInTitle": true`
-  - `"transportLayerSecurity": true`
-  - `"webinterface": true`
+
+* `"downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
+* `"recordingsDirStructure": "ONE_PER_MODEL"`
+* `"totalModelCountInTitle": true`
+* `"transportLayerSecurity": true`
+* `"webinterface": true`
 
 These post-processing steps will be set in the default config:
-  - Run external script `dopp.sh` to check the existence of the flag file to enable or disable post-processing, (see [Ancillary Scripts](#ancillary-scripts));
-  - Run external script `plcheck.sh` which checks the `playlist.m3u8` generated by CTBRec is terminated correctly, (see [Ancillary Scripts](#ancillary-scripts));
-  - Remux/Transcode to a matroska container;
-  - Rename to the following: `"$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`;
-  - Create contact sheet: 8x7 images, 2560px wide, timecodes enabled, same file name format as the Rename step.
 
-## Persistent Log File
+* Run external script `dopp.sh` to check the existence of the flag file to enable or disable post-processing, (see [Ancillary Scripts](#ancillary-scripts));
+* Run external script `plcheck.sh` which checks the `playlist.m3u8` generated by CTBRec is terminated correctly, (see [Ancillary Scripts](#ancillary-scripts));
+* Remux/Transcode to a matroska container;
+* (v3/4) Rename to the following: `"${modelSantizedName})_${siteSanitizedName})_${localDateTime(yyyyMMdd-HHmmss)}.${fileSuffix}"`;
+* (v5+) Rename to the following: `"$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`;
+* Create contact sheet: 8x7 images, 2560px wide, timecodes enabled, same file name format as the Rename step.
 
-Mapping `/app/logs` to a directory on the host will enable CTBRec to output the `server.log` to that directory otherwise it will be stored within the container until it's next restarted.
+## Logging
 
-If you want to change the information and errors that are being logged, edit the `logback.xml` and add a mapping to your `docker run` or `docker-compose.yml`.
+All logging is to the standard Docker logs, *no log file is created either external or internal to the container*.
 
-Make sure they have the correct permissions so that the container can read the `logback.xml` file and write to the `server.log` file.
-
-Include volume mappings in the `docker run` command or the `docker-compose.yml`.
-```
-docker run -d \
-    --name=ctbrec-debian \
-    -p 8080:8080 \
-    -p 8443:8443 \
-    -v /home/ctbrec/media:/app/captures:rw \
-    -v /home/ctbrec/.config/ctbrec:/app/config:rw \
-    -v /home/ctbrec/logback.xml:/app/logback.xml \
-    -v /home/ctbrec/logs:/app/logs:rw \
-    -e TZ=Australia/Sydney \
-    -e PGID=1000 \
-    -e PUID=1000 \
-    jafea7/ctbrec-debian
-```
-
-```yaml
-version: '2.1'
-services:
-  ctbrec-debian:
-    image: jafea7/ctbrec-debian
-    container_name: "CTBRec-Debian"
-    environment:
-      - TZ=Australia/Sydney
-      - PGID=1000
-      - PUID=1000
-    ports:
-      - "8080:8080"
-      - "8443:8443"
-    volumes:
-      - "/home/ctbrec/.config/ctbrec:/app/config:rw"
-      - "/home/ctbrec/media:/app/captures:rw"
-      - "/home/ctbrec/logback.xml:/app/logback.xml"
-      - "/home/ctbrec/logs:/app/logs:rw"
-    restart: "unless-stopped"
-```
-
-**NOTE:** With the persistent log the container output will only be available up until the CTBRec server starts, it's then redirected to the `server.log` file.
+If you want a log file then use the `docker logs` command, see [Docker Logging](https://docs.docker.com/config/containers/logging/) and [Docker Compose Logs](https://docs.docker.com/engine/reference/commandline/compose_logs/).
 
 ## Extras
 
 ### Ancillary Scripts
 
-**dopp.sh**
+#### dopp.sh
 
 This script controls post-processing by checking the existence of a `flag` file.
 
 Why does this script exist?
 
 In case you're running the server on low powered hardware, (or some other reason), it gives you a way to defer post-processing to a time of your choosing without having to:
-- stop the server;
-- remove post-processing steps;
-- start the server;
-- wait for all your recordings to finish;
-- stop the server;
-- add the post-processing steps back;
-- start the server;
-- and finally `Re-run post-processing` from the client.
+
+* stop the server;
+* remove post-processing steps;
+* start the server;
+* wait for all your recordings to finish;
+* stop the server;
+* add the post-processing steps back;
+* start the server;
+* and finally `Re-run post-processing` from the client.
 
 If the file `dopp` exists in the mapped `/app/config` directory then post-processing will continue as normal.
 
 If the file does not exist then post-processing will be aborted and the recording marked as `FAILED` in the interface.  To run post-processing on the recording, create the dopp file and `Re-run post-processing` via the context menu in the client.
 
 The relevant entry for post-processing is:
-```
+
+```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
       "config": {
@@ -359,7 +335,7 @@ The relevant entry for post-processing is:
 
 **NOTE:** By default this script is the **first step** in post-processing and the `dopp` file will be created whenever the container is started so that post-processing works as normal.
 
-**plcheck.sh**
+#### plcheck.sh
 
 A simple script that will check if `playlist.m3u8` is terminated correctly, only useful if you don't record as a single file.
 
@@ -368,6 +344,7 @@ If the container is terminated without existing captures being finished correctl
 By default this step happens before any following remux, (obviously), in post-processing, if `playlist.m3u8` doesn't exist, (in the case of `Record Single File` being enabled), or is correctly terminated it will exit otherwise it will append `#EXT-X-ENDLIST` to the file which will allow post-processing to be re-run without causing problems.
 
 The relevant entry for post-processing is:
+
 ```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
@@ -390,7 +367,8 @@ The defaults are:
 | SRVPSS | Mandatory | WebUI password, default is `sucks` |
 
 Examples:
-```
+
+```text
 docker run -d \
     --name=ctbrec-debian \
     -p 8080:8080 \
@@ -428,15 +406,17 @@ services:
     restart: "unless-stopped"
 ```
 
-**reclean.py**
+#### reclean.py
 
 Automatically removes orphaned JSON files from the `<config>/recordings` directory left there by the removal of the media file.
 
 This step should be the last in post-processing and the factors required for a JSON file to be removed are:
-- the media file does not exist;
-- the status of the recording was `FINISHED`.
+
+* the media file does not exist;
+* the status of the recording was `FINISHED`.
 
 The relevant entry for post-processing is:
+
 ```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
@@ -447,7 +427,7 @@ The relevant entry for post-processing is:
     }
 ```
 
-**reclaim.py**
+#### reclaim.py
 
 `reclaim.py` recovers drive space by **automatically deleting the oldest non-pinned captures** until the required amount of drive space is free.
 
@@ -462,6 +442,7 @@ Besides the above three environment variables it requires one more to specify th
 This script should be used by adding to the `Events & Actions` section of the settings.
 
 For example:
+
 ```json
   "eventHandlers": [
     {
@@ -487,7 +468,6 @@ For example:
     }
   ],
  ```
- 
 
 ### Send2 Scripts
 
@@ -496,6 +476,7 @@ Included are four scripts that will send a contact sheet created by post-process
 The scripts are called `send2discord.sh`, `send2telegram.sh`, `send2email.sh`, and `send2http.sh` respectively, they reside in the `/app` directory, they are designed to be called after creation of the contact sheet, (no point calling them before a contact sheet is created).
 
 The relevant entries for post-processing are, for example:
+
 ```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
@@ -505,6 +486,7 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
+
 ```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
@@ -514,6 +496,7 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
+
 ```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
@@ -523,6 +506,7 @@ The relevant entries for post-processing are, for example:
       }
     }
 ```
+
 ```json
     {
       "type": "ctbrec.recorder.postprocessing.Script",
@@ -542,7 +526,8 @@ To designate the Discord channel it is to be sent to, create an environment vari
 See [here](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for how to get it.
 
 For example:
-```
+
+```text
 docker run -d \
     --name=ctbrec-debian \
     -p 8080:8080 \
@@ -581,7 +566,8 @@ To designate the Telegram channel you need to set two environment variables, `CH
 See [here](https://www.shellhacks.com/telegram-api-send-message-personal-notification-bot/) on how to get both.
 
 For example:
-```
+
+```text
 docker run -d \
     --name=ctbrec-debian \
     -p 8080:8080 \
@@ -627,7 +613,8 @@ To send to an email address you need to set four environment variables, `MAILSER
 | MAILPASS | Mandatory | Password for email account sending the emails. |
 
 For example:
-```
+
+```text
 docker run -d \
     --name=ctbrec-debian \
     -p 8080:8080 \
@@ -667,8 +654,7 @@ services:
     restart: "unless-stopped"
 ```
 
-**NOTE: The following was a request by someone to add to the image and was written by them.
-        I have no way to test it so I don't know if it works or not.**
+**NOTE: The following was a request by someone to add to the image and was written by them.  I have no way to test it so I don't know if it works or not.**
 
 Send a POST request to an URL with postprocessing parameters.
 
@@ -690,7 +676,8 @@ You need three environment Variables: `HTTP_URL`, `CURL_ARGS`, and `CURL_GET`.
 | CURL_GET  | Optional | Send GET requests instead, no contact sheet |
 
 For example:
-```
+
+```text
 docker run -d \
     --name=ctbrec-debian \
     -p 8080:8080 \
@@ -729,4 +716,3 @@ services:
 ```
 
 For `docker-compose` you can also add the variables to the `.env` file and reference them from within the `docker-compose.yml` file.
-

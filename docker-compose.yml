@@ -9,9 +9,9 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
 # The following variables are used by reclean.py & reclaim.py
-      - SRVURL=${SRVURL}
-      - SRVUSR=${SRVUSR}
-      - SRVPSS=${SRVPSS}
+#      - SRVURL=${SRVURL}
+#      - SRVUSR=${SRVUSR}
+#      - SRVPSS=${SRVPSS}
 # The following variable is used for reclaim.py, the value is in bytes
 #      - RECOVER=${RECOVER}
 # The following variable is for using the optional Discord notification script
@@ -27,11 +27,6 @@ services:
     volumes:
       - "${CONFIG}/ctbrec:/app/config"
       - "${MEDIA}:/app/captures"
-      - "${LOGS}:/app/logs"
-# If you want to change what's logged, edit a new logback.xml
-# and map it on the host
-# ** Untested but not significantly different from the previous method **
-#      - "${CONFIG}/ctbrec/logback.xml:/app/logback.xml"
     ports:
       - 8080:8080
       - 8443:8443

@@ -1,6 +1,5 @@
 config\*
 media\*
-logs\*
 .git\*
 .github\*
 .dockerignore
@@ -12,4 +11,3 @@ Dockerfile*
 docker-compose.yml
 LICENSE
 README.md
-logback.xml

@@ -20,7 +20,7 @@
   "concurrentRecordings": 0,
   "confirmationForDangerousActions": false,
   "contactsheetTimestampLook": "font=sans-serif:fontcolor=white:fontsize=60:box=1:boxcolor=black@0.5:boxborderw=5",
-  "dateTimeFormat": "$format(${localDateTime},yyyyMMdd-HHmmss)",
+  "dateTimeFormat": "",
   "defaultPriority": 50,
   "determineResolution": false,
   "disabledSites": [],
@@ -32,6 +32,8 @@
   "fc2liveUsername": "",
   "ffmpegFileSuffix": "ts",
   "ffmpegMergedDownloadArgs": "-c:v copy -c:a copy -y -f mpegts",
+  "flirt4freePassword": "",
+  "flirt4freeUsername": "",
   "fontFamily": "Sans-Serif",
   "fontSize": 14,
   "hlsdlExecutable": "",
@@ -99,7 +101,6 @@
     },
     {
       "type": "ctbrec.recorder.postprocessing.Remux",
-      "enabled": true,
       "config": {
         "ffmpeg.args": "-c:v copy -c:a copy -y -f matroska",
         "file.ext": "mkv"
@@ -107,14 +108,12 @@
     },
     {
       "type": "ctbrec.recorder.postprocessing.Rename",
-      "enabled": true,
       "config": {
         "filename.template": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss).${fileSuffix}"
       }
     },
     {
       "type": "ctbrec.recorder.postprocessing.CreateContactSheet",
-      "enabled": true,
       "config": {
         "padding": "2",
         "burn_in_timestamp": "true",
