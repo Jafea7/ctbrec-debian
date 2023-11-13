@@ -4,6 +4,8 @@
   "bongaPassword": "",
   "bongaUsername": "",
   "bongacamsBaseUrl": "https://bongacams.com",
+  "browserOverride": "",
+  "browserParams": "",
   "cam4Password": "",
   "cam4Username": "",
   "camsodaPassword": "",
@@ -25,6 +27,7 @@
   "determineResolution": false,
   "disabledSites": [],
   "downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss)",
+  "dreamcamVR": true,
   "eventHandlers": [],
   "eventsSuspended": false,
   "fastScrollSpeed": true,
@@ -36,6 +39,7 @@
   "flirt4freeUsername": "",
   "fontFamily": "Sans-Serif",
   "fontSize": 14,
+  "forceBrowserOverride": false,
   "hlsdlExecutable": "",
   "httpPort": 8080,
   "httpSecurePort": 8443,
@@ -87,6 +91,7 @@
   "postProcessors": [
     {
       "type": "ctbrec.recorder.postprocessing.Script",
+      "enabled": true,
       "config": {
         "script.params": "",
         "script.executable": "/app/dopp.sh"
@@ -94,6 +99,7 @@
     },
     {
       "type": "ctbrec.recorder.postprocessing.Script",
+      "enabled": true,
       "config": {
         "script.params": "${absolutePath}",
         "script.executable": "/app/plcheck.sh"
@@ -101,6 +107,7 @@
     },
     {
       "type": "ctbrec.recorder.postprocessing.Remux",
+      "enabled": true,
       "config": {
         "ffmpeg.args": "-c:v copy -c:a copy -y -f matroska",
         "file.ext": "mkv"
@@ -108,12 +115,14 @@
     },
     {
       "type": "ctbrec.recorder.postprocessing.Rename",
+      "enabled": true,
       "config": {
         "filename.template": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-HHmmss).${fileSuffix}"
       }
     },
     {
       "type": "ctbrec.recorder.postprocessing.CreateContactSheet",
+      "enabled": true,
       "config": {
         "padding": "2",
         "burn_in_timestamp": "true",
@@ -166,11 +175,14 @@
   "startTab": "Recording",
   "streamatePassword": "",
   "streamateUsername": "",
+  "streamrayRecordGoalShows": true,
   "stripchatPassword": "",
   "stripchatUseXhamster": false,
   "stripchatUsername": "",
+  "stripchatVR": true,
   "tabOrder": [],
   "tabsSortable": true,
+  "thumbCacheSize": 16,
   "thumbWidth": 180,
   "timeoutRecordingEndingAt": "00:00",
   "timeoutRecordingStartingAt": "00:00",
