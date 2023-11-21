@@ -19,9 +19,9 @@ COPY rootfs/ /
 # Install ffmpeg static build, set permissions
 RUN useradd -u 1000 -U -G users -d /app -s /bin/false ctbrec && \
     mkdir -p /app/captures /app/config /app/ffmpeg && \
-    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
-    if [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
-    if [ "$TARGETPLATFORM" = "linux/arm64" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
+    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/old-releases/ffmpeg-5.1.1-amd64-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
+    if [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/old-releases/ffmpeg-5.1.1-armhf-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
+    if [ "$TARGETPLATFORM" = "linux/arm64" ]; then curl -k -v --http1.1 https://www.johnvansickle.com/ffmpeg/old-releases/ffmpeg-5.1.1-arm64-static.tar.xz | tar --strip-components=1 -C /app/ffmpeg -xvJ --wildcards "ffmpeg-*/ffmpeg"; fi && \
     chmod -R a+rwX /app/ && \
     chmod a+x /app/*.sh /app/*.py /app/ffmpeg/ffmpeg
 
