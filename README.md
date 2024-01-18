@@ -275,6 +275,7 @@ Change the username/password via the WebUI, you will need to log into it again a
 
 **NOTE**: A fresh start of the image will include a current default server.json, (if it doesn't exist already), with the following options set:
 
+* `"deleteOrphanedRecordingMetadata" : true,`
 * `"downloadFilename": "$sanitize(${modelName})_$sanitize(${siteName})_$format(${localDateTime},yyyyMMdd-hhmmss).${fileSuffix}"`
 * `"recordingsDirStructure": "ONE_PER_MODEL"`
 * `"totalModelCountInTitle": true`
