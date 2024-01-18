@@ -26,7 +26,7 @@ RUN useradd -u 1000 -U -G users -d /app -s /bin/false ctbrec && \
     chmod a+x /app/*.sh /app/*.py /app/ffmpeg/ffmpeg
 
 # Pull base image.
-FROM eclipse-temurin:19-jre
+FROM eclipse-temurin:21-jre
 
 # Copy app folder with ffmpeg from builder
 COPY --from=builder /app /app
