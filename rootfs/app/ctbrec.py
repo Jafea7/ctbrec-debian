@@ -127,7 +127,7 @@ class CtbRec:
         result = dict.fromkeys(m.keys(), 'offline')
         result.update(dict.fromkeys(o.keys(), 'online'))
         result.update(dict.fromkeys({self.model_id(i['model']) for i in r if i['status'] == 'RECORDING'}, 'recording'))
-        result.update(dict.fromkeys({k for k, v in m.items() if v['markedForLater']}, 'later'))
+        result.update(dict.fromkeys({k for k, v in m.items() if v['bookmarked']}, 'later'))
         result.update(dict.fromkeys({k for k, v in m.items() if v['suspended']}, 'paused'))
         return result
 
@@ -138,7 +138,7 @@ class CtbRec:
         Args:
             model: one of [url[str], Site:Name[str], ModelDict[dict]]
             props: optional dict of one or more model definition items to update in model. These can include;
-                       'priority' (integer), 'markedForLater' (True|False), 'suspended' (True|False),
+                       'priority' (integer), 'bookmarked' (True|False), 'suspended' (True|False),
                        'recordUntil' (int), 'recordUntilSubsequentAction' (string).
         Returns:
             The model dict if successfully added
@@ -182,7 +182,7 @@ class CtbRec:
             models: a list of model definitions - one of [url[str], Site:Name[str], ModelDict[dict]]
             props: optional dict of one or more model definition items that will be applied to all models.
                         These can include;
-                       'priority' (int), 'markedForLater' (bool), 'suspended' (bool),
+                       'priority' (int), 'bookmarked' (bool), 'suspended' (bool),
                        'recordUntil' (int|datetime), 'recordUntilSubsequentAction' (str).
         Returns:
             A list of any models successfully added
@@ -203,7 +203,7 @@ class CtbRec:
         Args:
             model: one of [url[str], Site:Name[str], ModelDict[dict]]
             props: dict of one or more model definition items to update in model. These can include;
-                       'priority' (int), 'markedForLater' (bool), 'suspended' (bool),
+                       'priority' (int), 'bookmarked' (bool), 'suspended' (bool),
                        'recordUntil' (int|datetime), 'recordUntilSubsequentAction' (str).
         Returns:
             The updated model dict
@@ -510,14 +510,14 @@ class CtbRec:
         """
         models = self.get_models()
         paused = len([m for m in models.values() if m['suspended']])
-        later = len([m for m in models.values() if m['markedForLater']])
+        later = len([m for m in models.values() if m['bookmarked']])
         online = len(self.get_models(online=True))
         recordings = self.get_recordings()
         recording = len([r for r in recordings if r['status'] == 'RECORDING'])
         post_process = len([r for r in recordings if r['status'] == 'POST_PROCESSING'])
         space = self.get_space()
         return {"total_models": len(models), "models_recording": recording, "models_online": online,
-                "models_paused": paused, "models_marked_later": later, "total_recordings": len(recordings),
+                "models_paused": paused, "models_bookmarked": later, "total_recordings": len(recordings),
                 "post_processing": post_process,
                 "space_used": f"{round((space['spaceTotal']-space['spaceFree'])/1e9,3)} GB",
                 "space_free": f"{round(space['spaceFree']/1e9,3)} GB"}
